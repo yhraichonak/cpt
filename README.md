@@ -1,7 +1,7 @@
 # CPT - Continuous Performance Testing Framework MVP
 
 ##  <ins>Architecture [diagram](https://drive.google.com/file/d/1E9mTDnDnQkk8gp-2cj_j2VHO6x6mOM84/view?usp=sharing):
-
+## [CPT Framework Presentation](CPT%20-%20Demo%20-%20uv.pdf)
 ![CPT.drawio.png](img/readme/CPT.drawio.png)
 
 ### <ins>Deployment steps:</ins>
