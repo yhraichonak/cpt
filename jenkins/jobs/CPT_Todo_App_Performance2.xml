@@ -1,0 +1,142 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1400.v7fd111b_ec82f">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2198.v41dd8ef6dd56"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2198.v41dd8ef6dd56">
+      <jobProperties/>
+      <triggers/>
+      <parameters>
+        <string>scenario</string>
+        <string>measurement</string>
+      </parameters>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
+      <abortPrevious>false</abortPrevious>
+    </org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@332.va_1ee476d8f6d">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>measurement</name>
+          <description>Measurement id for Octoperf</description>
+          <defaultValue>octoperf</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@2.8.3">
+          <name>scenario</name>
+          <randomName>choice-parameter-78492632647610</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <secureScript plugin="script-security@1336.vf33a_a_9863911">
+              <script>return [&quot;Scenario #1 - 1min - AT: [URGbL48BafbDfoxhuivo]&quot;, &quot;Scenario #2 - 5min - AT: [CbL6zY4BBbS92CNgr_S1]&quot;, &quot;Scenario #3 - 20min - AT: [Qiab2o4BgEhHlc_Xye2u]&quot;]</script>
+              <sandbox>true</sandbox>
+            </secureScript>
+            <secureFallbackScript plugin="script-security@1336.vf33a_a_9863911">
+              <script>return [&apos;Select which type&apos;]</script>
+              <sandbox>true</sandbox>
+            </secureFallbackScript>
+          </script>
+          <projectName>CPT_Todo_App_Performance2</projectName>
+          <projectFullName>CPT_Todo_App_Performance2</projectFullName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>false</filterable>
+          <filterLength>1</filterLength>
+        </org.biouno.unochoice.ChoiceParameter>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@3894.3896.vca_2c931e7935">
+    <script>import groovy.json.JsonSlurper
+      import groovy.transform.Field
+
+      def subTypeScript = getSubTypeScript()
+      @Field  def OCTOPERF_AUTH_HEADER=&quot;Authorization: Bearer XXXXX&quot;;
+      @Field def OCTOPERF_PROJECT_ID=&quot;BSruw44BqQahJeAt-mOY&quot;;
+      @Field def OCTOPERF_USER_ID=&quot;B13yv44BafbDfoxhauJx&quot;;
+      @Field def OCTOPERF_TRIGGER_VARIABLE_ID=&quot;GHEVl48B-ZTx-WvoinqY&quot;;
+      @Field def OCTOPERF_TRIGGER_VARIABLE=&quot;at_trigger&quot;;
+
+      pipeline {
+      agent any
+      //   triggers {
+      //   parameterizedCron(&apos;&apos;&apos;
+      //   0 9 * * * %measurement=octoperf9
+      //   0 10 * * * %measurement=octoperf10
+      //   0 11 * * * %measurement=octoperf11
+      //   &apos;&apos;&apos;)
+      //   }
+      options {
+      timestamps()
+      }
+      parameters {
+      // string(name: &quot;scenario_id&quot;, defaultValue: &quot;URGbL48BafbDfoxhuivo&quot;, description: &quot;Octoperf test scenario id&quot;)
+      string(name: &quot;measurement&quot;, defaultValue: &quot;octoperf&quot;, description: &quot;Measurement id for Octoperf&quot;)
+      activeChoice choiceType: &apos;PT_SINGLE_SELECT&apos;, filterLength: 1, filterable: false, name: &apos;scenario&apos;, randomName: &apos;choice-parameter-78492632647610&apos;, script: groovyScript(fallbackScript: [classpath: [], oldScript: &apos;&apos;, sandbox: true, script: &quot;return [&apos;Select which type&apos;]&quot;], script: [classpath: [], oldScript: &apos;&apos;, sandbox: true, script: &quot;return $subTypeScript&quot;])
+
+      }
+
+      stages {
+      stage(&apos;OctoPerf&apos;) {
+      steps {
+      script{
+      SCENARIO_ID=params.scenario.split(&quot;:&quot;).last().trim().replace(&quot;[&quot;,&quot;&quot;).replace(&quot;]&quot;,&quot;&quot;).trim()
+      echo &quot;SCENARIO_ID=${SCENARIO_ID}&quot;
+      sh &quot;curl -X &apos;PUT&apos; &apos;https://api.octoperf.com/design/variables/$OCTOPERF_TRIGGER_VARIABLE_ID&apos; -H &apos;accept: */*&apos; -H &apos;$OCTOPERF_AUTH_HEADER&apos; -H &apos;Content-Type: application/json&apos; -d &apos;{  \&quot;description\&quot;: \&quot;\&quot;,  \&quot;id\&quot;: \&quot;$OCTOPERF_TRIGGER_VARIABLE_ID\&quot;,  \&quot;name\&quot;: \&quot;$OCTOPERF_TRIGGER_VARIABLE\&quot;,  \&quot;projectId\&quot;: \&quot;$OCTOPERF_PROJECT_ID\&quot;,  \&quot;userId\&quot;: \&quot;$OCTOPERF_USER_ID\&quot;,  \&quot;variable\&quot;: {    \&quot;@type\&quot;: \&quot;ConstantVariable\&quot;,    \&quot;value\&quot;: \&quot;${params.measurement}\&quot;}}&apos;&quot;
+      sh &quot;sed -i -e \&quot;s/default_cpu_tag/${params.measurement}/g\&quot; /share/telegraf.conf&quot;
+      sh &quot;sed -i -e \&quot;s/default_mem_tag/${params.measurement}/g\&quot; /share/telegraf.conf&quot;
+      octoPerfTest credentialsId: &apos;octo&apos;, scenarioId: &quot;${SCENARIO_ID}&quot;
+      }
+      }
+      post{
+      always{
+      script{
+      sh &quot;curl -X &apos;PUT&apos; &apos;https://api.octoperf.com/design/variables/$OCTOPERF_TRIGGER_VARIABLE_ID&apos; -H &apos;accept: */*&apos; -H &apos;$OCTOPERF_AUTH_HEADER&apos; -H &apos;Content-Type: application/json&apos; -d &apos;{  \&quot;description\&quot;: \&quot;\&quot;,  \&quot;id\&quot;: \&quot;$OCTOPERF_TRIGGER_VARIABLE_ID\&quot;,  \&quot;name\&quot;: \&quot;$OCTOPERF_TRIGGER_VARIABLE\&quot;,  \&quot;projectId\&quot;: \&quot;$OCTOPERF_PROJECT_ID\&quot;,  \&quot;userId\&quot;: \&quot;$OCTOPERF_USER_ID\&quot;,  \&quot;variable\&quot;: {    \&quot;@type\&quot;: \&quot;ConstantVariable\&quot;,    \&quot;value\&quot;: \&quot;jmeter\&quot;}}&apos;&quot;
+      sh &quot;sed -i -e \&quot;s/${params.measurement}/default_cpu_tag/g\&quot; /share/telegraf.conf&quot;
+      sh &quot;sed -i -e \&quot;s/${params.measurement}/default_mem_tag/g\&quot; /share/telegraf.conf&quot;
+      }
+      }
+      }
+      }
+      stage(&apos;Archive Artifacts&apos;) {
+      steps {
+      archiveArtifacts artifacts: &apos;**/*.log&apos;,
+      allowEmptyArchive: true,
+      fingerprint: true,
+      onlyIfSuccessful: false
+      }
+      }
+
+      stage(&apos;JunitReport&apos;) {
+      steps {
+      junit &apos;junit-report.xml&apos;
+      }
+      }
+
+      stage(&apos;PerfReport&apos;) {
+      steps {
+      perfReport modeThroughput: true, sourceDataFiles: &apos;jtls/*.jtl&apos;
+      }
+      }
+      }
+
+      }
+      def getSubTypeScript() {
+      def proc= [&quot;curl&quot;, &quot;--url&quot;, &quot;https://api.octoperf.com/runtime/scenarios/by-project/$OCTOPERF_PROJECT_ID&quot;, &quot;-H&quot;, &quot;$OCTOPERF_AUTH_HEADER&quot;].execute()
+      proc.waitFor()
+      def data = (List)new JsonSlurper().parseText(proc.text)
+      data.sort{ a, b -&gt; a.name &lt;=&gt; b.name  }
+      return data.collect{t -&gt; &quot;\&quot;&quot;+t[&quot;name&quot;]+&quot;: [&quot;+t[&quot;id&quot;]+&quot;]\&quot;&quot;}.sort()
+      }</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

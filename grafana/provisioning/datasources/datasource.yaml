@@ -1,0 +1,31 @@
+apiVersion: 1
+datasources:
+  - orgId: 1
+    version: 2
+    name: InfluxDB for Octoperf
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    basicAuth: true
+    isDefault: false
+    editable: true
+    readOnly: false
+    jsonData:
+      defaultBucket: CPT
+      httpMode: POST
+      organization: Forte
+      version: Flux
+    secureJsonData:
+      token: JS5fxCbWerlpIN3uxBSeKN4efI0i8rHLJWtQW2T9at0HKy6jGbTpyA5u-4n-JYu6NN1xbjae-JQLCfEq_D1Jww==
+  - id: 2
+    uid: "bc56308a-bd47-42d5-bd9e-2bfb2e066719"
+    orgId: 1
+    name: "INFINITY"
+    type: "yesoreyeram-infinity-datasource"
+    url: ""
+    basicAuth: false
+    basicAuthUser: ""
+    isDefault: false
+    jsonData:
+      global_queries: [ ]
+    readOnly: false

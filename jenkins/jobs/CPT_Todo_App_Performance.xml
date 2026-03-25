@@ -1,0 +1,102 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@332.va_1ee476d8f6d">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <org.biouno.unochoice.ChoiceParameter plugin="uno-choice@2.8.3">
+          <name>test</name>
+          <randomName>choice-parameter-73972926994797</randomName>
+          <visibleItemCount>1</visibleItemCount>
+          <script class="org.biouno.unochoice.model.GroovyScript">
+            <secureScript plugin="script-security@1336.vf33a_a_9863911">
+              <script>import groovy.json.JsonSlurper
+                def proc= [&quot;curl&quot;, &quot;--url&quot;, &quot;https://api.octoperf.com/runtime/scenarios/by-project/BSruw44BqQahJeAt-mOY&quot;, &quot;-H&quot;, &quot;Authorization: Bearer XXXXX&quot;].execute()
+                proc.waitFor()
+                def data = new JsonSlurper().parseText(proc.text)
+                return  data.collect{t-&gt;t.name+&quot;: [&quot;+t.id+&quot;]&quot;}</script>
+              <sandbox>false</sandbox>
+            </secureScript>
+            <secureFallbackScript plugin="script-security@1336.vf33a_a_9863911">
+              <script></script>
+              <sandbox>true</sandbox>
+            </secureFallbackScript>
+          </script>
+          <projectName>CPT - Todo App Performance</projectName>
+          <projectFullName>CPT - Todo App Performance</projectFullName>
+          <choiceType>PT_SINGLE_SELECT</choiceType>
+          <filterable>false</filterable>
+          <filterLength>1</filterLength>
+        </org.biouno.unochoice.ChoiceParameter>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <org.jenkinsci.plugins.octoperf.OctoperfBuilder plugin="octoperf@4.7.0">
+      <credentialsId>octo</credentialsId>
+      <workspaceId>5Abuw44BzynPYZfkha0C</workspaceId>
+      <projectId>BSruw44BqQahJeAt-mOY</projectId>
+      <scenarioId>Qiab2o4BgEhHlc_Xye2u</scenarioId>
+      <serverUrl></serverUrl>
+      <testName></testName>
+      <stopConditions/>
+    </org.jenkinsci.plugins.octoperf.OctoperfBuilder>
+  </builders>
+  <publishers>
+    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1265.v65b_14fa_f12f0">
+      <testResults>junit-report.xml</testResults>
+      <stdioRetention>NONE</stdioRetention>
+      <keepProperties>false</keepProperties>
+      <healthScaleFactor>1.0</healthScaleFactor>
+      <allowEmptyResults>true</allowEmptyResults>
+      <skipPublishingChecks>false</skipPublishingChecks>
+      <checksName></checksName>
+      <skipMarkingBuildUnstable>false</skipMarkingBuildUnstable>
+      <skipOldReports>false</skipOldReports>
+    </hudson.tasks.junit.JUnitResultArchiver>
+    <hudson.plugins.performance.PerformancePublisher plugin="performance@957.v658a_7065b_92a_">
+      <errorFailedThreshold>-1</errorFailedThreshold>
+      <errorUnstableThreshold>-1</errorUnstableThreshold>
+      <errorUnstableResponseTimeThreshold></errorUnstableResponseTimeThreshold>
+      <relativeFailedThresholdPositive>-1.0</relativeFailedThresholdPositive>
+      <relativeFailedThresholdNegative>-1.0</relativeFailedThresholdNegative>
+      <relativeUnstableThresholdPositive>-1.0</relativeUnstableThresholdPositive>
+      <relativeUnstableThresholdNegative>-1.0</relativeUnstableThresholdNegative>
+      <nthBuildNumber>0</nthBuildNumber>
+      <configType>ART</configType>
+      <graphType>ART</graphType>
+      <modeOfThreshold>false</modeOfThreshold>
+      <failBuildIfNoResultFile>true</failBuildIfNoResultFile>
+      <compareBuildPrevious>false</compareBuildPrevious>
+      <optionType>ART</optionType>
+      <modePerformancePerTestCase>false</modePerformancePerTestCase>
+      <excludeResponseTime>false</excludeResponseTime>
+      <showTrendGraphs>true</showTrendGraphs>
+      <modeThroughput>false</modeThroughput>
+      <modeEvaluation>false</modeEvaluation>
+      <constraints class="empty-list"/>
+      <ignoreFailedBuilds>false</ignoreFailedBuilds>
+      <ignoreUnstableBuilds>false</ignoreUnstableBuilds>
+      <persistConstraintLog>false</persistConstraintLog>
+      <sourceDataFiles>**/*.log</sourceDataFiles>
+      <filterRegex></filterRegex>
+      <junitOutput></junitOutput>
+      <percentiles>0,50,90,95,100</percentiles>
+      <baselineBuild>0</baselineBuild>
+    </hudson.plugins.performance.PerformancePublisher>
+  </publishers>
+  <buildWrappers/>
+</project>

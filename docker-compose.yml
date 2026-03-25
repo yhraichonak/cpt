@@ -1,0 +1,107 @@
+version: '1'
+services:
+   todo-app:
+    hostname: testapp
+    build:
+      context: ./app
+    depends_on:
+      - todo-database
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+      - 35729:35729
+    volumes:
+      - ./share/:/share/
+    develop:
+      watch:
+        - path: ./app/package.json
+          action: rebuild
+        - path: ./app
+          target: /usr/src/app
+          action: sync
+   todo-database:
+     hostname: testdb
+     build: ./db
+     depends_on:
+       - influxdb
+     ports:
+       - 27017:27017
+     volumes:
+       - ./share/:/share/
+     tty: true
+   grafana:
+     hostname: grafana
+     container_name: grafana
+     links:
+       - influxdb:influxdb
+     depends_on:
+       - influxdb
+     image: grafana/grafana
+     build: ./grafana
+     user: "104"
+     ports:
+       - "4000:3000"
+     environment:
+       - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
+     volumes:
+       - ./grafana/provisioning/:/etc/grafana/provisioning/
+       - ./share/:/share/
+     restart: always
+   influxdb:
+     image: influxdb
+     hostname: influxdb
+     build: ./influxdb
+     container_name: influxdb
+     volumes:
+       - ./share/:/share/
+     ports:
+       - "8086:8086"
+     expose:
+        - 8086
+     restart: always
+   jenkins:
+      image: jenkins/jenkins
+      build: ./jenkins
+      container_name: jenkins
+      ports:
+       - "8080:8080"
+       - "50000:50000"
+      environment:
+      - JENKINS_ADMIN_LOGIN=admin
+      - JENKINS_ADMIN_PASSWORD=admin
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+#        - ./jenkins_home:/var/jenkins_home
+        - jenkins-home:/var/jenkins_home
+        - ./share/:/share/
+      restart: always
+   octoperf:
+      image: octoperf/docker-agent:14.4.1
+      build: ./octoperf
+      hostname: octoperf
+      container_name: octoperf_agent
+      environment:
+        - SERVER_URL=https://api.octoperf.com:443
+        - AGENT_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJvY3RvcGVyZiIsImlhdCI6MTcxMzk5Njk5OCwiaW5mbyI6IntcImRvY2tlckltYWdlXCI6XCJvY3RvcGVyZi9kb2NrZXItYWdlbnQ6MTQuNC4xXCIsXCJpZFwiOlwiXCIsXCJuYW1lXCI6XCJpbmRpZ29fanVhbl9rcmVpZ2VyXCIsXCJwcm92aWRlcklkXCI6XCJXRHV0eEk0QnB2S2NfVUJTU2dlMFwiLFwicmVnaW9uXCI6XCJkZWZhdWx0XCIsXCJ0eXBlXCI6XCJNQU5VQUxcIixcInpvbmVcIjpcImRlZmF1bHRcIn0ifQ.7d8nyZuJWt7wMKZ-8lvip1NaWDEetMtZMQN5QkhcNBE
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      restart: unless-stopped
+#
+#   cpt-env:
+#     image: ubuntu:22.04
+#     build: ./cpt-env
+#     hostname: cptenv
+#     container_name: cpt-env
+#     tty: true
+#     volumes:
+#       - ./share/:/share/
+#     depends_on:
+#       - influxdb
+
+volumes:
+    grafana-home:
+    grafana-conf:
+    jenkins-home:
+    docker-dind:
+    influxdb:

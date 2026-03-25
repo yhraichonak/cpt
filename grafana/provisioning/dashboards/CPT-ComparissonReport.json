@@ -1,0 +1,603 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 7,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P90DAF0D5C496F445"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 9,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.name}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${test1}\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"statut\"] == \"all\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"Create Task - ${test1}\"})",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${test2}\")\n  |> filter(fn: (r) => r[\"application\"] == \"CPT\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"statut\"] == \"all\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"Create Task - ${test2}\"})",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${test1}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"meanAT\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"internal\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"VU number - ${test1}\"})",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"host\"] == \"testapp\")\n  |> filter(fn: (r) => r[\"tag1\"] == \"${test1}\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"CPU-${test1}\"})\n",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"host\"] == \"testapp\")\n  |> filter(fn: (r) => r[\"tag1\"] == \"${test2}\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"CPU-${test2}\"})\n",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mem\")\n  |> filter(fn: (r) => r[\"_field\"] == \"active\")\n  |> filter(fn: (r) => r[\"tag1\"] == \"${test1}\")\n  |> filter(fn: (r) => r[\"host\"] == \"testdb\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"RAM-${test1}\"})",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mem\")\n  |> filter(fn: (r) => r[\"_field\"] == \"active\")\n  |> filter(fn: (r) => r[\"tag1\"] == \"${test2}\")\n  |> filter(fn: (r) => r[\"host\"] == \"testdb\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"RAM-${test2}\"})",
+          "refId": "G"
+        }
+      ],
+      "title": "Regression runs comparisson (ALIGNED) [NO ZOOM]",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bc56308a-bd47-42d5-bd9e-2bfb2e066719"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vu (lastNotNull)"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Virtual Users Number"
+              },
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*cpu.*/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "shades"
+                }
+              },
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*mem.*/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "shades"
+                }
+              },
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*regr.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "shades"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.axisColorMode",
+                "value": "series"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 23,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.5",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "_time",
+              "text": "time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "Create Task - regression1",
+              "text": "regr1",
+              "type": "number"
+            },
+            {
+              "selector": "Create Task - regression2",
+              "text": "regr2",
+              "type": "number"
+            },
+            {
+              "selector": "VU number - regression1",
+              "text": "vu",
+              "type": "number"
+            },
+            {
+              "selector": "CPU-regression1",
+              "text": "cpu1",
+              "type": "number"
+            },
+            {
+              "selector": "CPU-regression2",
+              "text": "cpu2",
+              "type": "number"
+            },
+            {
+              "selector": "RAM-regression1",
+              "text": "mem1",
+              "type": "number"
+            },
+            {
+              "selector": "RAM-regression2",
+              "text": "mem2",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "relax_column_count": false,
+            "skip_empty_lines": false,
+            "skip_lines_with_error": false
+          },
+          "data": "\"_time\",\"Create Task - regression1\",\"Create Task - regression2\",\"VU number - regression1\",\"CPU-regression1\",\"CPU-regression2\",\"RAM-regression1\",\"RAM-regression2\"\r\n2024-05-21 12:18:52,264,437,0,2.34,0.176,4098342912,3030253568\r\n2024-05-21 12:18:57,,353,1,,,,\r\n2024-05-21 12:18:57,,,,4.70,3.53,4113375232,3022483456\r\n2024-05-21 12:18:57,207,,,,,,\r\n2024-05-21 12:19:02,,,1,,,,\r\n2024-05-21 12:19:02,,330,,1.59,11.2,4109860864,3155480576\r\n2024-05-21 12:19:02,193,,,,,,\r\n2024-05-21 12:19:07,183,369,2,,,,\r\n2024-05-21 12:19:07,,,,6.80,11.6,4113428480,3901849600\r\n2024-05-21 12:19:12,180,415,5,,,,\r\n2024-05-21 12:19:12,,,,16.7,6.77,4137467904,4007612416\r\n2024-05-21 12:19:17,,,6,,,,\r\n2024-05-21 12:19:17,,477,,,,,\r\n2024-05-21 12:19:17,178,,,,,,\r\n2024-05-21 12:19:17,,,,12.3,3.41,4235591680,4134932480\r\n2024-05-21 12:19:22,,,8,,,,\r\n2024-05-21 12:19:22,,483,,,,,\r\n2024-05-21 12:19:22,175,,,,,,\r\n2024-05-21 12:19:22,,,,3.47,4.32,5155549184,4155097088\r\n2024-05-21 12:19:27,,,8,,,,\r\n2024-05-21 12:19:27,190,494,,,,,\r\n2024-05-21 12:19:27,,,,2.81,5.93,5191098368,4178108416\r\n2024-05-21 12:19:32,,,8,,,,\r\n2024-05-21 12:19:32,199,503,,,,,\r\n2024-05-21 12:19:32,,,,1.03,6.27,5203984384,4200349696\r\n2024-05-21 12:19:37,,,8,,,,\r\n2024-05-21 12:19:37,192,505,,,,,\r\n2024-05-21 12:19:37,,,,1.78,6.81,5210750976,4194623488\r\n2024-05-21 12:19:42,,,8,,,,\r\n2024-05-21 12:19:42,192,514,,,,,\r\n2024-05-21 12:19:42,,,,1.38,7.26,5238603776,4192768000\r\n2024-05-21 12:19:47,,,8,,,,\r\n2024-05-21 12:19:47,196,510,,,,,\r\n2024-05-21 12:19:47,,,,1.55,7.18,5233197056,4234866688\r\n2024-05-21 12:19:52,,,8,,,,\r\n2024-05-21 12:19:52,195,491,,,,,\r\n2024-05-21 12:19:52,,,,1.88,7.26,5249732608,4141760512\r\n2024-05-21 12:19:57,,,8,,,,\r\n2024-05-21 12:19:57,183,515,,,,,\r\n2024-05-21 12:19:57,,,,1.82,6.91,5258870784,4215652352\r\n2024-05-21 12:20:02,,,8,,,,\r\n2024-05-21 12:20:02,188,590,,,,,\r\n2024-05-21 12:20:02,,,,1.43,6.64,5263896576,4229607424\r\n2024-05-21 12:20:07,,,8,,,,\r\n2024-05-21 12:20:07,214,730,,,,,\r\n2024-05-21 12:20:07,,,,1.48,6.65,5258571776,4184510464\r\n2024-05-21 12:20:12,,,10,,,,\r\n2024-05-21 12:20:12,240,1035,,,,,\r\n2024-05-21 12:20:12,,,,1.91,6.50,5261860864,4203384832\r\n2024-05-21 12:20:17,,,13,,,,\r\n2024-05-21 12:20:17,,1332,,,,,\r\n2024-05-21 12:20:17,,,,1.91,6.55,5264818176,4232843264\r\n2024-05-21 12:20:17,237,,,,,,\r\n2024-05-21 12:20:22,,,16,,,,\r\n2024-05-21 12:20:22,252,,,,,,\r\n2024-05-21 12:20:22,,1682,,,,,\r\n2024-05-21 12:20:22,,,,1.68,6.90,5263847424,4222885888\r\n2024-05-21 12:20:27,,2054,,,,,\r\n2024-05-21 12:20:27,280,,,,,,\r\n2024-05-21 12:20:27,,,,1.95,7.14,5270474752,4191911936\r\n2024-05-21 12:20:27,,,19,,,,\r\n2024-05-21 12:20:32,,,21,,,,\r\n2024-05-21 12:20:32,,2446,,,,,\r\n2024-05-21 12:20:32,265,,,,,,\r\n2024-05-21 12:20:32,,,,1.79,7.25,5262008320,4196708352\r\n2024-05-21 12:20:37,,,24,,,,\r\n2024-05-21 12:20:37,332,2715,,2.39,7.47,5265584128,4261056512\r\n2024-05-21 12:20:42,,,27,,,,\r\n2024-05-21 12:20:42,412,2905,,,,,\r\n2024-05-21 12:20:42,,,,3.40,7.21,5263773696,4198563840\r\n2024-05-21 12:20:47,,,29,,,,\r\n2024-05-21 12:20:47,432,2938,,,,,\r\n2024-05-21 12:20:47,,,,4.28,7.09,5280137216,4238454784\r\n2024-05-21 12:20:52,,,30,,,,\r\n2024-05-21 12:20:52,606,3152,,,,,\r\n2024-05-21 12:20:52,,,,5.16,7.40,5348421632,4229738496\r\n2024-05-21 12:20:57,,,30,,,,\r\n2024-05-21 12:20:57,573,3269,,5.93,7.38,5280776192,4363640832\r\n2024-05-21 12:21:02,,,30,,,,\r\n2024-05-21 12:21:02,672,4258,,6.17,7.65,5327114240,4234760192\r\n2024-05-21 12:21:07,,,30,,,,\r\n2024-05-21 12:21:07,,4767,,5.86,7.80,5370212352,4384542720\r\n2024-05-21 12:21:07,3948,,,,,,\r\n2024-05-21 12:21:12,,,30,,,,\r\n2024-05-21 12:21:12,,5427,,6.68,7.42,5289283584,4456271872\r\n2024-05-21 12:21:12,1224,,,,,,\r\n2024-05-21 12:21:17,1170,5537,,7.53,7.24,5393100800,4335513600\r\n2024-05-21 12:21:17,,,30,,,,\r\n2024-05-21 12:21:22,1334,5506,,7.27,7.15,5339852800,4260925440\r\n2024-05-21 12:21:22,,,30,,,,\r\n2024-05-21 12:21:27,,,30,,,,\r\n2024-05-21 12:21:27,,,,7.39,8.03,5318123520,4461510656\r\n2024-05-21 12:21:27,1408,5931,,,,,\r\n2024-05-21 12:21:32,,,30,,,,\r\n2024-05-21 12:21:32,1462,,,7.41,7.29,5348757504,4263997440\r\n2024-05-21 12:21:32,,5741,,,,,\r\n2024-05-21 12:21:37,,,30,,,,\r\n2024-05-21 12:21:37,1560,6162,,7.14,7.51,5319913472,4288294912\r\n2024-05-21 12:21:42,,,30,,,,\r\n2024-05-21 12:21:42,1706,5126,,7.36,6.99,5350436864,4401782784\r\n2024-05-21 12:21:47,,,30,,,,\r\n2024-05-21 12:21:47,1902,4496,,7.38,7.42,5304659968,4659548160\r\n2024-05-21 12:21:52,,,30,,,,\r\n2024-05-21 12:21:52,,4176,,7.43,7.02,5345210368,4296257536\r\n2024-05-21 12:21:52,1685,,,,,,\r\n2024-05-21 12:21:57,,,30,,,,\r\n2024-05-21 12:21:57,,,,7.21,7.23,5309009920,4488769536\r\n2024-05-21 12:21:57,1755,3570,,,,,\r\n2024-05-21 12:22:02,,3895,30,,,,\r\n2024-05-21 12:22:02,,,,6.99,7.21,5395542016,4491681792\r\n2024-05-21 12:22:02,1904,,,,,,\r\n2024-05-21 12:22:07,,,30,,,,\r\n2024-05-21 12:22:07,,,,7.43,10.1,5356380160,4434898944\r\n2024-05-21 12:22:07,1970,4093,,,,,\r\n2024-05-21 12:22:12,,,30,,,,\r\n2024-05-21 12:22:12,,,,7.60,7.59,5320220672,4849934336\r\n2024-05-21 12:22:12,2102,3488,,,,,\r\n2024-05-21 12:22:17,,,30,,,,\r\n2024-05-21 12:22:17,,3845,,8.57,9.61,5358874624,4436758528\r\n2024-05-21 12:22:17,2120,,,,,,\r\n2024-05-21 12:22:22,,,30,,,,\r\n2024-05-21 12:22:22,,,,8.37,7.72,5329956864,4558680064\r\n2024-05-21 12:22:22,2128,3930,,,,,\r\n2024-05-21 12:22:27,,,30,,,,\r\n2024-05-21 12:22:27,,,,7.32,9.02,5403328512,4467769344\r\n2024-05-21 12:22:27,2099,3551,,,,,\r\n2024-05-21 12:22:32,,,30,,,,\r\n2024-05-21 12:22:32,,,,7.14,8.48,5344653312,4637581312\r\n2024-05-21 12:22:32,2076,3369,,,,,\r\n2024-05-21 12:22:37,,,30,,,,\r\n2024-05-21 12:22:37,,,,7.12,9.49,5337063424,4458680320\r\n2024-05-21 12:22:37,,3467,,,,,\r\n2024-05-21 12:22:37,2227,,,,,,\r\n2024-05-21 12:22:42,,,30,,,,\r\n2024-05-21 12:22:42,,,,7.23,7.32,5385973760,4377427968\r\n2024-05-21 12:22:42,2273,3266,,,,,\r\n2024-05-21 12:22:47,,,30,7.12,7.57,5386534912,4545462272\r\n2024-05-21 12:22:47,2347,2808,,,,,\r\n2024-05-21 12:22:52,,,30,,,,\r\n2024-05-21 12:22:52,,,,7.12,7.88,5371416576,4507541504\r\n2024-05-21 12:22:52,2597,3203,,,,,\r\n2024-05-21 12:22:57,,,30,,,,\r\n2024-05-21 12:22:57,,,,7.67,8.57,5372690432,4710031360\r\n2024-05-21 12:22:57,,3546,,,,,\r\n2024-05-21 12:22:57,2449,,,,,,\r\n2024-05-21 12:23:02,,,30,,,,\r\n2024-05-21 12:23:02,,,,8.32,8.74,5388668928,4744187904\r\n2024-05-21 12:23:02,2363,2878,,,,,\r\n2024-05-21 12:23:07,,,,7.05,9.72,5395963904,4453040128\r\n2024-05-21 12:23:07,2437,3383,,,,,\r\n2024-05-21 12:23:07,,,30,,,,\r\n2024-05-21 12:23:12,,,30,6.98,8.15,5378732032,4745469952\r\n2024-05-21 12:23:12,2559,3669,,,,,\r\n2024-05-21 12:23:17,,,30,7.09,9.32,5373775872,4454252544\r\n2024-05-21 12:23:17,,3057,,,,,\r\n2024-05-21 12:23:17,2527,,,,,,\r\n2024-05-21 12:23:22,,,30,7.55,9.24,5390094336,4317110272\r\n2024-05-21 12:23:22,2621,,,,,,\r\n2024-05-21 12:23:22,,3480,,,,,\r\n2024-05-21 12:23:27,,,,7.27,9.07,5370667008,4798300160\r\n2024-05-21 12:23:27,,3913,,,,,\r\n2024-05-21 12:23:27,2684,,30,,,,\r\n2024-05-21 12:23:32,,,30,,,,\r\n2024-05-21 12:23:32,,,,7.04,9.48,5386141696,4498628608\r\n2024-05-21 12:23:32,2710,3399,,,,,\r\n2024-05-21 12:23:37,,,30,7.13,8.65,5331722240,4612739072\r\n2024-05-21 12:23:37,2712,3933,,,,,\r\n2024-05-21 12:23:42,,,30,7.37,8.58,5383352320,4505452544\r\n2024-05-21 12:23:42,2729,3661,,,,,\r\n2024-05-21 12:23:47,,,30,6.95,8.88,5342879744,4492378112\r\n2024-05-21 12:23:47,2691,3654,,,,,\r\n2024-05-21 12:23:52,,,30,6.88,8.89,5456773120,4885032960\r\n2024-05-21 12:23:52,,4295,,,,,\r\n2024-05-21 12:23:52,2731,,,,,,\r\n2024-05-21 12:23:57,,,30,6.91,9.68,5297631232,4561805312\r\n2024-05-21 12:23:57,2554,,,,,,\r\n2024-05-21 12:23:57,,3763,,,,,\r\n2024-05-21 12:24:02,,,27,7.05,10.1,5410455552,4707569664\r\n2024-05-21 12:24:02,2151,,,,,,\r\n2024-05-21 12:24:02,,3727,,,,,\r\n2024-05-21 12:24:07,,,23,7.21,9.07,5318950912,4876804096\r\n2024-05-21 12:24:07,1661,2528,,,,,\r\n2024-05-21 12:24:12,,,,7.00,10.7,5276704768,4668039168\r\n2024-05-21 12:24:12,,,18,,,,\r\n2024-05-21 12:24:12,,1771,,,,,\r\n2024-05-21 12:24:12,1144,,,,,,\r\n2024-05-21 12:24:17,,,,7.01,7.39,5291839488,5105348608\r\n2024-05-21 12:24:17,,,13,,,,\r\n2024-05-21 12:24:17,839,,,,,,\r\n2024-05-21 12:24:17,,1545,,,,,\r\n2024-05-21 12:24:22,,,,7.05,7.65,5382074368,4323975168\r\n2024-05-21 12:24:22,,,8,,,,\r\n2024-05-21 12:24:22,,1384,,,,,\r\n2024-05-21 12:24:22,777,,,,,,\r\n2024-05-21 12:24:27,,,5,6.97,7.58,5299585024,4392218624\r\n2024-05-21 12:24:27,698,1165,,,,,\r\n2024-05-21 12:24:32,,,,6.91,7.51,5433614336,4444372992\r\n2024-05-21 12:24:32,,,3,,,,\r\n2024-05-21 12:24:32,663,954,,,,,\r\n2024-05-21 12:24:37,,,,7.09,6.92,5319684096,4235132928\r\n2024-05-21 12:24:37,,,2,,,,\r\n2024-05-21 12:24:37,586,874,,,,,\r\n2024-05-21 12:24:42,,,,7.14,2.88,5346066432,4312100864\r\n2024-05-21 12:24:42,,,2,,,,\r\n2024-05-21 12:24:42,541,860,,,,,\r\n2024-05-21 12:24:43,525,,,,,,\r\n2024-05-21 12:24:47,,,,6.76,1.64,5278973952,4321284096\r\n2024-05-21 12:24:47,,,1,,,,\r\n2024-05-21 12:24:52,,,,3.73,1.31,5271359488,4272021504\r\n2024-05-21 12:24:52,,,1,,,,\r\n2024-05-21 12:24:53,,,1,,,,\r\n2024-05-21 12:24:57,,,,1.01,1.21,5238861824,4299259904\r\n2024-05-21 12:25:02,,,,0.881,0.842,5241294848,4323713024\r\n2024-05-21 12:25:07,,,,1.09,1.07,5240692736,4302745600\r\n2024-05-21 12:25:12,,,,1.01,0.276,5288206336,4303966208\r\n2024-05-21 12:25:17,,,,0.956,0.188,5282299904,3213619200\r\n2024-05-21 12:25:22,,,,0.781,0.100,5308428288,3214536704\r\n2024-05-21 12:25:27,,,,0.302,,4288782336,3214888960\r\n2024-05-21 12:25:32,,,,0.867,,4295856128,\r\n2024-05-21 12:25:37,,,,,,4304867328,",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bc56308a-bd47-42d5-bd9e-2bfb2e066719"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "refId": "A",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/grafana/grafana-infinity-datasource/blob/main/testdata/users.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Regression comparisson",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "cpu1": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "cpu2": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "mem1": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "mem2": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "regr1": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "regr2": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "time": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "vu": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "calculateField",
+          "options": {
+            "alias": "regr1proc",
+            "binary": {
+              "left": "regr1 (lastNotNull)",
+              "operator": "/",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "disabled": true,
+          "id": "calculateField",
+          "options": {
+            "alias": "regr2proc",
+            "binary": {
+              "left": "regr2 (lastNotNull)",
+              "operator": "/",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "regr1 (lastNotNull)"
+              },
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "regr2 (lastNotNull)"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        }
+      ],
+      "type": "timeseries"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "regression1",
+          "value": "regression1"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "test1",
+        "options": [
+          {
+            "selected": false,
+            "text": "regression2",
+            "value": "regression2"
+          },
+          {
+            "selected": true,
+            "text": "regression1",
+            "value": "regression1"
+          }
+        ],
+        "query": "regression2,regression1",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "regression2",
+          "value": "regression2"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "test2",
+        "options": [
+          {
+            "selected": false,
+            "text": "regression1",
+            "value": "regression1"
+          },
+          {
+            "selected": true,
+            "text": "regression2",
+            "value": "regression2"
+          }
+        ],
+        "query": "regression1, regression2",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "2024-05-21T17:18:38.212Z",
+    "to": "2024-05-21T17:24:37.552Z"
+  },
+  "timeRangeUpdatedDuringEditOrView": false,
+  "timepicker": {},
+  "timezone": "",
+  "title": "CPT-Comparisson dashboard",
+  "uid": "ebded3f9-5cb7-4afc-8011-e489df6e8f30",
+  "version": 3,
+  "weekStart": ""
+}

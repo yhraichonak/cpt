@@ -1,0 +1,5 @@
+/CPT-docker.iml
+/docker_build_examples.txt
+/docker_run_examples.txt
+/.idea/
+/influxdb-timeshift-proxy/node_modules/

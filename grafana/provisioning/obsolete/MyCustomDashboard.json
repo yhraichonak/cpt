@@ -1,0 +1,1012 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 5,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P90DAF0D5C496F445"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 9,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.name}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "query": "import \"experimental\"\nimport \"experimental/polyline\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"regression1\")\n  |> filter(fn: (r) => r[\"application\"] == \"CPT\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"statut\"] == \"all\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> group(columns: [\"transaction\"], mode:\"by\")\n  |> polyline.rdp(epsilon: 1.5)\n  |> rename(columns: {_value: \"REGRESSION1\"})",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nimport \"experimental/polyline\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"regression2\")\n  |> filter(fn: (r) => r[\"application\"] == \"CPT\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"statut\"] == \"all\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> group(columns: [\"transaction\"], mode:\"by\")\n  |> polyline.rdp(epsilon: 1.5)\n  |> rename(columns: {_value: \"REGRESSION2\"})",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "",
+          "refId": "C"
+        }
+      ],
+      "title": "Create task response time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P90DAF0D5C496F445"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 9,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.name}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "type": "linear"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "query": "import \"experimental\"\nimport \"experimental/polyline\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"regression1\")\n  |> filter(fn: (r) => r[\"application\"] == \"CPT\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"statut\"] == \"all\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> group(columns: [\"transaction\"], mode:\"by\")\n  |> polyline.rdp(epsilon: 1.5)\n  |> rename(columns: {_value: \"REGRESSION1\"})",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "\nimport \"experimental\"\nimport \"experimental/polyline\"\ndata=from(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"regression1\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"application\"] == \"CPT\")\n  |> group(columns: [\"_time\"], mode: \"except\")\n  |> last()\n  |> limit(n:1)\n  |> yield(name: \"table1\")\n\ntempInfo = data\n  |> findRecord(\n        fn: (key) => key._measurement == \"regression1\",\n        idx: 0\n    )\n\nfrom(bucket: \"CPT\")\n  |> range(start: tempInfo._time, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"host\"] == \"testapp\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> rename(columns: {_value: \"CPU\"})\n",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "",
+          "refId": "C"
+        }
+      ],
+      "title": "Regression1 CPU",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P90DAF0D5C496F445"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 3600000,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.name}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "query": "from(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"host\"] == \"testapp\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> rename(columns: {_value: \"CPU\"})\n",
+          "refId": "A"
+        }
+      ],
+      "title": "CPU % usage on APP",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P90DAF0D5C496F445"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 3600000,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.name}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "query": "from(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"mem\")\n  |> filter(fn: (r) => r[\"_field\"] == \"active\")\n  |> filter(fn: (r) => r[\"host\"] == \"testdb\")\n  |> rename(columns: {_value: \"RAM\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "RAM on DB",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P90DAF0D5C496F445"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.name}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "query": "from(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_field\"] == \"meanAT\")\n  |> rename(columns: {_value: \"VU number\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Virtual Users Number",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P90DAF0D5C496F445"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 9,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "${__field.name}",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "REGRESSION1"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "REGRESSION2"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 11,
+        "x": 0,
+        "y": 46
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"regression1\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"statut\"] == \"all\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"REGRESSION1\"})",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"regression2\")\n  |> filter(fn: (r) => r[\"application\"] == \"CPT\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"Create task\")  \n  |> filter(fn: (r) => r[\"statut\"] == \"all\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"REGRESSION2\"})",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "import \"experimental\"\nfrom(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"regression1\")\n  |> filter(fn: (r) => r[\"_field\"] == \"meanAT\")\n  |> filter(fn: (r) => r[\"transaction\"] == \"internal\")\n  |> experimental.alignTime(alignTo: v.timeRangeStart)\n  |> rename(columns: {_value: \"VU number\"})",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P90DAF0D5C496F445"
+          },
+          "hide": false,
+          "query": "from(bucket: \"CPT\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_user\")\n  |> filter(fn: (r) => r[\"host\"] == \"testapp\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> rename(columns: {_value: \"CPU\"})",
+          "refId": "D"
+        }
+      ],
+      "title": "Regression runs comparisson (ALIGNED) [NO ZOOM]",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bc56308a-bd47-42d5-bd9e-2bfb2e066719"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "regr1 (lastNotNull)"
+            },
+            "properties": [
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "type": "linear"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "displayName",
+                "value": "REGRESSION1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "regr2 (lastNotNull)"
+            },
+            "properties": [
+              {
+                "id": "custom.scaleDistribution",
+                "value": {
+                  "type": "linear"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "displayName",
+                "value": "REGRESSION2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vu (lastNotNull)"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Virtual Users Number"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 11,
+        "y": 46
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.5",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "time",
+              "text": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "regr1",
+              "text": "",
+              "type": "number"
+            },
+            {
+              "selector": "regr2",
+              "text": "",
+              "type": "number"
+            },
+            {
+              "selector": "vu",
+              "text": "",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "skip_empty_lines": false,
+            "skip_lines_with_error": false
+          },
+          "data": "time,regr1,regr2,vu\n2024-05-15 14:46:25,389,3189,0\n2024-05-15 14:46:30,283,,\n2024-05-15 14:46:30,,2185,\n2024-05-15 14:46:30,,,1\n2024-05-15 14:46:35,,,2\n2024-05-15 14:46:35,228,,\n2024-05-15 14:46:35,,2577,\n2024-05-15 14:46:40,,,3\n2024-05-15 14:46:40,220,,\n2024-05-15 14:46:40,,2780,\n2024-05-15 14:46:45,,3362,\n2024-05-15 14:46:45,,,5\n2024-05-15 14:46:45,230,,\n2024-05-15 14:46:50,,,7\n2024-05-15 14:46:50,228,,\n2024-05-15 14:46:50,,3844,\n2024-05-15 14:46:55,,,8\n2024-05-15 14:46:55,221,,\n2024-05-15 14:46:55,,3866,\n2024-05-15 14:47:00,,4243,\n2024-05-15 14:47:00,,,8\n2024-05-15 14:47:00,209,,\n2024-05-15 14:47:05,,,8\n2024-05-15 14:47:05,202,,\n2024-05-15 14:47:05,,4700,\n2024-05-15 14:47:10,,,8\n2024-05-15 14:47:10,,5222,\n2024-05-15 14:47:15,,5533,\n2024-05-15 14:47:15,,,8\n2024-05-15 14:47:15,211,,\n2024-05-15 14:47:20,,,8\n2024-05-15 14:47:20,224,,\n2024-05-15 14:47:20,,5496,\n2024-05-15 14:47:25,,,8\n2024-05-15 14:47:25,229,,\n2024-05-15 14:47:25,,5878,\n2024-05-15 14:47:30,,,8\n2024-05-15 14:47:30,244,,\n2024-05-15 14:47:30,,6221,\n2024-05-15 14:47:35,,,8\n2024-05-15 14:47:35,363,,\n2024-05-15 14:47:35,,6651,\n2024-05-15 14:47:40,,,8\n2024-05-15 14:47:40,617,,\n2024-05-15 14:47:40,,6750,\n2024-05-15 14:47:45,,7697,\n2024-05-15 14:47:45,,,10\n2024-05-15 14:47:45,1097,,\n2024-05-15 14:47:50,1481,,\n2024-05-15 14:47:50,,,13\n2024-05-15 14:47:55,,,15\n2024-05-15 14:47:55,1743,,\n2024-05-15 14:48:00,,7731,\n2024-05-15 14:48:00,,,18\n2024-05-15 14:48:00,1674,,\n2024-05-15 14:48:05,,,20\n2024-05-15 14:48:05,1639,,\n2024-05-15 14:48:10,,,23\n2024-05-15 14:48:10,1811,,\n2024-05-15 14:48:10,,8230,\n2024-05-15 14:48:15,,,26\n2024-05-15 14:48:15,2858,,\n2024-05-15 14:48:15,,9875,\n2024-05-15 14:48:20,4190,,28\n2024-05-15 14:48:20,,10433,\n2024-05-15 14:48:25,,,30\n2024-05-15 14:48:25,4807,,\n2024-05-15 14:48:30,,,30\n2024-05-15 14:48:30,3699,,\n2024-05-15 14:48:30,,11715,\n2024-05-15 14:48:35,3506,,\n2024-05-15 14:48:35,,,30\n2024-05-15 14:48:40,,,30\n2024-05-15 14:48:40,3268,,\n2024-05-15 14:48:45,,12027,\n2024-05-15 14:48:45,,,30\n2024-05-15 14:48:45,3115,,\n2024-05-15 14:48:50,,12377,\n2024-05-15 14:48:50,,,30\n2024-05-15 14:48:50,2995,,\n2024-05-15 14:48:55,,,30\n2024-05-15 14:48:55,2748,,\n2024-05-15 14:49:00,,,30\n2024-05-15 14:49:00,2524,,\n2024-05-15 14:49:05,,14575,\n2024-05-15 14:49:05,,,30\n2024-05-15 14:49:05,2533,,\n2024-05-15 14:49:10,,17937,\n2024-05-15 14:49:10,,,30\n2024-05-15 14:49:10,2637,,\n2024-05-15 14:49:15,,23851,\n2024-05-15 14:49:15,,,30\n2024-05-15 14:49:15,3333,,\n2024-05-15 14:49:20,,28583,\n2024-05-15 14:49:20,,,30\n2024-05-15 14:49:20,3317,,\n2024-05-15 14:49:25,,36106,\n2024-05-15 14:49:25,,,30\n2024-05-15 14:49:25,2725,,\n2024-05-15 14:49:30,,36187,\n2024-05-15 14:49:30,,,30\n2024-05-15 14:49:30,2984,,\n2024-05-15 14:49:35,,36943,\n2024-05-15 14:49:35,,,30\n2024-05-15 14:49:35,3047,,\n2024-05-15 14:49:40,,37160,\n2024-05-15 14:49:40,,,30\n2024-05-15 14:49:40,3019,,\n2024-05-15 14:49:45,,34194,\n2024-05-15 14:49:45,,,30\n2024-05-15 14:49:45,3337,,\n2024-05-15 14:49:50,,33565,\n2024-05-15 14:49:50,,,30\n2024-05-15 14:49:50,3479,,\n2024-05-15 14:49:55,,31999,\n2024-05-15 14:49:55,,,30\n2024-05-15 14:49:55,3373,,\n2024-05-15 14:50:00,,12018,\n2024-05-15 14:50:00,,,30\n2024-05-15 14:50:00,3542,,\n2024-05-15 14:50:05,,11698,\n2024-05-15 14:50:05,,,30\n2024-05-15 14:50:05,3733,,\n2024-05-15 14:50:10,,6864,\n2024-05-15 14:50:10,,,30\n2024-05-15 14:50:10,3452,,\n2024-05-15 14:50:15,,7162,\n2024-05-15 14:50:15,,,30\n2024-05-15 14:50:15,3369,,\n2024-05-15 14:50:20,,6098,\n2024-05-15 14:50:20,,,30\n2024-05-15 14:50:20,3591,,\n2024-05-15 14:50:25,,6272,\n2024-05-15 14:50:25,,,30\n2024-05-15 14:50:25,3679,,\n2024-05-15 14:50:30,,5790,\n2024-05-15 14:50:30,,,30\n2024-05-15 14:50:30,3619,,\n2024-05-15 14:50:35,,5970,\n2024-05-15 14:50:35,,,30\n2024-05-15 14:50:35,4129,,\n2024-05-15 14:50:40,,6352,\n2024-05-15 14:50:40,,,30\n2024-05-15 14:50:40,3868,,\n2024-05-15 14:50:45,,5608,\n2024-05-15 14:50:45,,,30\n2024-05-15 14:50:45,3824,,\n2024-05-15 14:50:50,,6764,\n2024-05-15 14:50:50,,,30\n2024-05-15 14:50:50,4067,,\n2024-05-15 14:50:55,,6503,\n2024-05-15 14:50:55,3884,,30\n2024-05-15 14:51:00,,6465,\n2024-05-15 14:51:00,,,30\n2024-05-15 14:51:00,4090,,\n2024-05-15 14:51:05,,7176,\n2024-05-15 14:51:05,,,30\n2024-05-15 14:51:05,4079,,\n2024-05-15 14:51:10,,6058,\n2024-05-15 14:51:10,,,30\n2024-05-15 14:51:10,3891,,\n2024-05-15 14:51:15,,7028,\n2024-05-15 14:51:15,,,30\n2024-05-15 14:51:15,4325,,\n2024-05-15 14:51:20,,6293,\n2024-05-15 14:51:20,,,30\n2024-05-15 14:51:20,4501,,\n2024-05-15 14:51:25,,6554,\n2024-05-15 14:51:25,,,30\n2024-05-15 14:51:25,5313,,\n2024-05-15 14:51:30,,6515,\n2024-05-15 14:51:30,,,30\n2024-05-15 14:51:30,5218,,\n2024-05-15 14:51:35,,5587,\n2024-05-15 14:51:35,,,29\n2024-05-15 14:51:35,5374,,\n2024-05-15 14:51:40,,5214,\n2024-05-15 14:51:40,,,25\n2024-05-15 14:51:40,5285,,\n2024-05-15 14:51:45,,3813,\n2024-05-15 14:51:45,,,20\n2024-05-15 14:51:45,4378,,\n2024-05-15 14:51:50,,3174,\n2024-05-15 14:51:50,,,16\n2024-05-15 14:51:50,4092,,\n2024-05-15 14:51:55,,,11\n2024-05-15 14:51:55,3936,,\n2024-05-15 14:51:55,,2884,\n2024-05-15 14:52:00,,2553,\n2024-05-15 14:52:00,,,8\n2024-05-15 14:52:00,3841,,\n2024-05-15 14:52:05,,2417,\n2024-05-15 14:52:05,,,6\n2024-05-15 14:52:05,3840,,\n2024-05-15 14:52:10,,2232,\n2024-05-15 14:52:10,3497,,\n2024-05-15 14:52:10,,,5\n2024-05-15 14:52:15,3234,,\n2024-05-15 14:52:15,,,4\n2024-05-15 14:52:20,,,3\n2024-05-15 14:52:25,,,2\n2024-05-15 14:52:26,,,2",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bc56308a-bd47-42d5-bd9e-2bfb2e066719"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "refId": "A",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/grafana/grafana-infinity-datasource/blob/main/testdata/users.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Regression comparisson",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "regr1": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "regr2": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "time": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "vu": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "calculateField",
+          "options": {
+            "alias": "regr1proc",
+            "binary": {
+              "left": "regr1 (lastNotNull)",
+              "operator": "/",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "disabled": true,
+          "id": "calculateField",
+          "options": {
+            "alias": "regr2proc",
+            "binary": {
+              "left": "regr2 (lastNotNull)",
+              "operator": "/",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "regr1 (lastNotNull)"
+              },
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "regr2 (lastNotNull)"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        }
+      ],
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timeRangeUpdatedDuringEditOrView": false,
+  "timepicker": {},
+  "timezone": "",
+  "title": "MyCustomDashboard SANDBOX",
+  "uid": "ebded3f9-5cb7-4afc-8011-e489df6e8f24",
+  "version": 70,
+  "weekStart": ""
+}
